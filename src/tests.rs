@@ -21,3 +21,14 @@ fn test_ray_color() {
 fn test_ray_html() {
     ray!().html("<strong>Hello, HTML!</strong>");
 }
+
+#[test]
+fn test_ray_clear_all() {
+    ray!("Hello Clear");
+    ray!().clear_all();
+}
+
+#[test]
+fn test_ray_conffiti() {
+    ray!().confetti();
+}

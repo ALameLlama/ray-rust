@@ -7,6 +7,8 @@ pub enum RayMessage {
     Text(RayText),
     Color(RayColor),
     HTML(RayHtml),
+    ClearAll(RayClearAll),
+    Confetti(RayConfetti),
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -14,6 +16,8 @@ pub enum RayMessageType {
     Log,
     Text,
     HTML,
+    ClearAll,
+    Confetti,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -21,14 +25,18 @@ pub enum RayContentType {
     Log,
     Custom,
     Color,
+    ClearAll,
+    Confetti,
 }
 
 impl RayContentType {
-    pub fn as_string(&self) -> String {
+    pub fn to_string(&self) -> String {
         match self {
             RayContentType::Log => "log".to_string(),
             RayContentType::Custom => "custom".to_string(),
             RayContentType::Color => "color".to_string(),
+            RayContentType::ClearAll => "clear_all".to_string(),
+            RayContentType::Confetti => "confetti".to_string(),
         }
     }
 }
@@ -42,7 +50,7 @@ pub struct RayLog {
 
 impl RayLog {
     pub fn get_type() -> String {
-        RayContentType::Log.as_string()
+        RayContentType::Log.to_string()
     }
 }
 
@@ -55,7 +63,7 @@ pub struct RayText {
 
 impl RayText {
     pub fn get_type() -> String {
-        RayContentType::Custom.as_string()
+        RayContentType::Custom.to_string()
     }
 }
 
@@ -67,7 +75,7 @@ pub struct RayColor {
 
 impl RayColor {
     pub fn get_type() -> String {
-        RayContentType::Color.as_string()
+        RayContentType::Color.to_string()
     }
 }
 
@@ -106,6 +114,30 @@ pub struct RayHtml {
 
 impl RayHtml {
     pub fn get_type() -> String {
-        RayContentType::Custom.as_string()
+        RayContentType::Custom.to_string()
+    }
+}
+
+// https://github.com/spatie/ray/blob/main/src/Payloads/ClearAllPayload.php
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct RayClearAll {
+    pub label: RayMessageType,
+}
+
+impl RayClearAll {
+    pub fn get_type() -> String {
+        RayContentType::ClearAll.to_string()
+    }
+}
+
+// https://github.com/spatie/ray/blob/main/src/Payloads/ConfettiPayload.php
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct RayConfetti {
+    pub label: RayMessageType,
+}
+
+impl RayConfetti {
+    pub fn get_type() -> String {
+        RayContentType::Confetti.to_string()
     }
 }

@@ -5,6 +5,7 @@ edition = "2021"
 authors = ["ALameLlama NicholasACiechanowski@gmail.com"]
 description = "Spatie Ray in Rust"
 homepage = "https://github.com/ALameLlama/ray-rust"
+readme = "README.md"
 repository = "https://github.com/ALameLlama/ray-rust"
 license = "MIT"
 keywords = ["spatie", "ray", "debug"]

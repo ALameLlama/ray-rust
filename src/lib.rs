@@ -27,6 +27,27 @@ macro_rules! ray {
     }};
 }
 
+#[macro_export]
+macro_rules! rd {
+    () => {{
+        Ray::new()
+
+        todo!("Need to add die");
+    }};
+    ($($arg:expr),*) => {{
+        let mut ray = Ray::new();
+        let mut vec = Vec::new();
+
+        $(vec.push(format!("{:#?}", $arg));)*
+
+        ray.log(vec);
+
+        ray
+
+        todo!("Need to add die");
+    }};
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct RayPayload {
     uuid: String,
@@ -116,6 +137,22 @@ impl Ray {
         self
     }
 
+    pub fn clear_all(&mut self) -> &mut Self {
+        let message = RayMessage::ClearAll(RayClearAll {
+            label: RayMessageType::ClearAll,
+        });
+
+        let content = RayContent {
+            content_type: RayClearAll::get_type(),
+            origin: RayOrigin::new(),
+            content: message,
+        };
+
+        self.request.payloads.push(content);
+
+        self.send()
+    }
+
     pub fn log(&mut self, values: Vec<String>) -> &mut Self {
         let message = RayMessage::Log(RayLog {
             label: RayMessageType::Log,
@@ -181,5 +218,171 @@ impl Ray {
         self.request.payloads.push(content);
 
         self.send()
+    }
+
+    pub fn confetti(&mut self) -> &mut Self {
+        let message = RayMessage::Confetti(RayConfetti {
+            label: RayMessageType::Confetti,
+        });
+
+        let content = RayContent {
+            content_type: RayConfetti::get_type(),
+            origin: RayOrigin::new(),
+            content: message,
+        };
+
+        self.request.payloads.push(content);
+
+        self.send()
+    }
+
+    pub fn count(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn counter_value(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn die(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn disable(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn disabled(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn enable(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn enabled(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn file(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn gray(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn green(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn hide(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn hide_app(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn image(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    // I'm not sure if this is possible in Rust
+    pub fn r#if(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn json(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn label(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn large(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn limit(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn link(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn measure(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn new_screen(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn notify(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn orange(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn pass(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn pause(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn info(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn purple(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    // TODO: This has 3 functions max, per_second and clear
+    pub fn rate_limiter(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn red(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn separator(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn show_app(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn small(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn table(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn to_json(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn trace(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn url(&mut self) -> &mut Self {
+        todo!();
+    }
+
+    pub fn xml(&mut self) -> &mut Self {
+        todo!();
     }
 }
