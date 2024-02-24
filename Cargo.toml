@@ -2,9 +2,18 @@
 name = "ray-rust"
 version = "0.1.0"
 edition = "2021"
-description = "spatie ray debugger"
+authors = ["ALameLlama NicholasACiechanowski@gmail.com"]
+description = "Spatie Ray in Rust"
+homepage = "https://github.com/ALameLlama/ray-rust"
+repository = "https://github.com/ALameLlama/ray-rust"
 license = "MIT"
+keywords = ["spatie", "ray", "debug"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+reqwest = { version = "0.11.24", features = ["blocking", "json"] }
+rustc_version = { version = "0.4.0" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
+uuid = { version = "1.7.0", features = ["v4", "fast-rng"] }
