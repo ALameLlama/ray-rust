@@ -16,3 +16,8 @@ fn test_ray_text() {
 fn test_ray_color() {
     ray!("Hello Color").color("green");
 }
+
+#[test]
+fn test_ray_html() {
+    ray!().html("<strong>Hello, HTML!</strong>");
+}

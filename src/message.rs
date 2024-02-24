@@ -6,12 +6,31 @@ pub enum RayMessage {
     Log(RayLog),
     Text(RayText),
     Color(RayColor),
+    HTML(RayHtml),
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum RayMessageType {
     Log,
     Text,
+    HTML,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub enum RayContentType {
+    Log,
+    Custom,
+    Color,
+}
+
+impl RayContentType {
+    pub fn as_string(&self) -> String {
+        match self {
+            RayContentType::Log => "log".to_string(),
+            RayContentType::Custom => "custom".to_string(),
+            RayContentType::Color => "color".to_string(),
+        }
+    }
 }
 
 // https://github.com/spatie/ray/blob/main/src/Payloads/LogPayload.php
@@ -23,7 +42,7 @@ pub struct RayLog {
 
 impl RayLog {
     pub fn get_type() -> String {
-        "log".to_string()
+        RayContentType::Log.as_string()
     }
 }
 
@@ -36,7 +55,7 @@ pub struct RayText {
 
 impl RayText {
     pub fn get_type() -> String {
-        "custom".to_string()
+        RayContentType::Custom.as_string()
     }
 }
 
@@ -48,7 +67,7 @@ pub struct RayColor {
 
 impl RayColor {
     pub fn get_type() -> String {
-        "color".to_string()
+        RayContentType::Color.as_string()
     }
 }
 
@@ -75,5 +94,18 @@ impl RayColors {
             "grey" => RayColors::Gray("gray".to_string()), // In case someone spells it the right way
             _ => RayColors::Gray("gray".to_string()),
         }
+    }
+}
+
+// https://github.com/spatie/ray/blob/main/src/Payloads/HtmlPayload.php
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct RayHtml {
+    pub label: RayMessageType,
+    pub content: String,
+}
+
+impl RayHtml {
+    pub fn get_type() -> String {
+        RayContentType::Custom.as_string()
     }
 }

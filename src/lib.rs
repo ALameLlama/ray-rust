@@ -165,4 +165,21 @@ impl Ray {
 
         self.send()
     }
+
+    pub fn html(&mut self, value: &str) -> &mut Self {
+        let message = RayMessage::HTML(RayHtml {
+            label: RayMessageType::HTML,
+            content: value.to_string(),
+        });
+
+        let content = RayContent {
+            content_type: RayHtml::get_type(),
+            origin: RayOrigin::new(),
+            content: message,
+        };
+
+        self.request.payloads.push(content);
+
+        self.send()
+    }
 }
