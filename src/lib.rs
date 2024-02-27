@@ -30,9 +30,11 @@ macro_rules! ray {
 #[macro_export]
 macro_rules! rd {
     () => {{
-        Ray::new()
+        let mut ray = Ray::new();
 
-        todo!("Need to add die");
+        ray.die(1);
+
+        ray
     }};
     ($($arg:expr),*) => {{
         let mut ray = Ray::new();
@@ -42,9 +44,9 @@ macro_rules! rd {
 
         ray.log(vec);
 
-        ray
+        ray.die(1);
 
-        todo!("Need to add die");
+        ray
     }};
 }
 
@@ -236,7 +238,27 @@ impl Ray {
         self.send()
     }
 
-    pub fn count(&mut self) -> &mut Self {
+    pub fn charles(&mut self) -> &mut Self {
+        let message = RayMessage::Charles(RayCharles {
+            content: "🎶 🎹 🎷 🕺".to_string(),
+        });
+
+        let content = RayContent {
+            content_type: RayCharles::get_type(),
+            origin: RayOrigin::new(),
+            content: message,
+        };
+
+        self.request.payloads.push(content);
+
+        self.send()
+    }
+
+    pub fn count(&mut self, name: &str) -> &mut Self {
+        // create a new counter hashmap with the name?
+        // increment the counter hashmap with the name?
+        // return a custom message with "called name x times"
+
         todo!();
     }
 
@@ -244,8 +266,12 @@ impl Ray {
         todo!();
     }
 
-    pub fn die(&mut self) -> &mut Self {
+    pub fn clear_counters(&mut self) -> &mut Self {
         todo!();
+    }
+
+    pub fn die(&mut self, status: i32) {
+        std::process::exit(status);
     }
 
     pub fn disable(&mut self) -> &mut Self {

@@ -9,6 +9,7 @@ pub enum RayMessage {
     HTML(RayHtml),
     ClearAll(RayClearAll),
     Confetti(RayConfetti),
+    Charles(RayCharles),
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -18,6 +19,7 @@ pub enum RayMessageType {
     HTML,
     ClearAll,
     Confetti,
+    Charles,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -139,5 +141,17 @@ pub struct RayConfetti {
 impl RayConfetti {
     pub fn get_type() -> String {
         RayContentType::Confetti.to_string()
+    }
+}
+
+// https://github.com/spatie/ray/blob/main/src/Ray.php#L498
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct RayCharles {
+    pub content: String,
+}
+
+impl RayCharles {
+    pub fn get_type() -> String {
+        RayContentType::Custom.to_string()
     }
 }
