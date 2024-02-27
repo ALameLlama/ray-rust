@@ -11,7 +11,9 @@ mod tests;
 macro_rules! ray {
     // If no arguments are passed, just create a new Ray instance
     () => {{
-        Ray::new()
+        let ray = Ray::new();
+
+        ray
     }};
     // If one or more arguments are passed, log them
     ($($arg:expr),*) => {{
@@ -116,6 +118,7 @@ impl RayMeta {
 
 pub struct Ray {
     request: RayPayload,
+    is_enabled: bool,
 }
 
 impl Ray {
@@ -126,10 +129,15 @@ impl Ray {
                 payloads: vec![],
                 meta: RayMeta::new(),
             },
+            is_enabled: true,
         }
     }
 
     pub fn send(&mut self) -> &mut Self {
+        if !self.is_enabled {
+            return self;
+        }
+
         let request = self.request.clone();
 
         let client = reqwest::blocking::Client::new();
@@ -137,6 +145,14 @@ impl Ray {
         let _ = client.post("http://localhost:23517").json(&request).send();
 
         self
+    }
+
+    pub fn die(&mut self, status: i32) {
+        panic!("exited with code {}", status);
+
+        // TODO: I think we need to use process::exit here to actually exit the process since this
+        // doesn't stop threaded work but I can't see a nice way to test this. I'm going to leave it
+        // std::process::exit(status);
     }
 
     pub fn clear_all(&mut self) -> &mut Self {
@@ -153,6 +169,27 @@ impl Ray {
         self.request.payloads.push(content);
 
         self.send()
+    }
+
+    pub fn new_screen(&mut self, name: Option<&str>) -> &mut Self {
+        let message = RayMessage::NewScreen(RayNewScreen {
+            label: RayMessageType::NewScreen,
+            name: name.unwrap_or("").to_string(),
+        });
+
+        let content = RayContent {
+            content_type: RayNewScreen::get_type(),
+            origin: RayOrigin::new(),
+            content: message,
+        };
+
+        self.request.payloads.push(content);
+
+        self.send()
+    }
+
+    pub fn clear_screen(&mut self) -> &mut Self {
+        self.new_screen(None)
     }
 
     pub fn log(&mut self, values: Vec<String>) -> &mut Self {
@@ -254,7 +291,7 @@ impl Ray {
         self.send()
     }
 
-    pub fn count(&mut self, name: &str) -> &mut Self {
+    pub fn count(&mut self, _name: &str) -> &mut Self {
         // create a new counter hashmap with the name?
         // increment the counter hashmap with the name?
         // return a custom message with "called name x times"
@@ -270,24 +307,24 @@ impl Ray {
         todo!();
     }
 
-    pub fn die(&mut self, status: i32) {
-        std::process::exit(status);
-    }
-
     pub fn disable(&mut self) -> &mut Self {
-        todo!();
+        self.is_enabled = false;
+
+        self
     }
 
-    pub fn disabled(&mut self) -> &mut Self {
-        todo!();
+    pub fn disabled(&mut self) -> bool {
+        !self.is_enabled
     }
 
     pub fn enable(&mut self) -> &mut Self {
-        todo!();
+        self.is_enabled = true;
+
+        self
     }
 
-    pub fn enabled(&mut self) -> &mut Self {
-        todo!();
+    pub fn enabled(&mut self) -> bool {
+        self.is_enabled
     }
 
     pub fn file(&mut self) -> &mut Self {
@@ -340,10 +377,6 @@ impl Ray {
     }
 
     pub fn measure(&mut self) -> &mut Self {
-        todo!();
-    }
-
-    pub fn new_screen(&mut self) -> &mut Self {
         todo!();
     }
 

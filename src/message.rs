@@ -10,6 +10,7 @@ pub enum RayMessage {
     ClearAll(RayClearAll),
     Confetti(RayConfetti),
     Charles(RayCharles),
+    NewScreen(RayNewScreen),
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -20,6 +21,7 @@ pub enum RayMessageType {
     ClearAll,
     Confetti,
     Charles,
+    NewScreen,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -29,6 +31,7 @@ pub enum RayContentType {
     Color,
     ClearAll,
     Confetti,
+    NewScreen,
 }
 
 impl RayContentType {
@@ -39,6 +42,7 @@ impl RayContentType {
             RayContentType::Color => "color".to_string(),
             RayContentType::ClearAll => "clear_all".to_string(),
             RayContentType::Confetti => "confetti".to_string(),
+            RayContentType::NewScreen => "new_screen".to_string(),
         }
     }
 }
@@ -153,5 +157,18 @@ pub struct RayCharles {
 impl RayCharles {
     pub fn get_type() -> String {
         RayContentType::Custom.to_string()
+    }
+}
+
+// https://github.com/spatie/ray/blob/main/src/Payloads/NewScreenPayload.php
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct RayNewScreen {
+    pub label: RayMessageType,
+    pub name: String,
+}
+
+impl RayNewScreen {
+    pub fn get_type() -> String {
+        RayContentType::NewScreen.to_string()
     }
 }
