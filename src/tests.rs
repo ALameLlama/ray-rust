@@ -65,6 +65,23 @@ fn test_rd_macro_with_multiple_args() {
 }
 
 #[test]
+fn test_ray_macro_with_struct() {
+    #[derive(Debug, Serialize, Deserialize, Clone)]
+    struct TestStruct {
+        name: String,
+        age: i32,
+    }
+
+    let test_struct = TestStruct {
+        name: "John".to_string(),
+        age: 30,
+    };
+
+    let ray = ray!(test_struct);
+    assert_eq!(ray.request.payloads.len(), 1);
+}
+
+#[test]
 fn test_ray_log_function() {
     let mut ray = Ray::new();
     ray.log(vec!["Hello, Log!".to_string()]);
