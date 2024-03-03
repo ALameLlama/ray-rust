@@ -133,9 +133,25 @@ impl Ray {
         }
     }
 
-    pub fn send(&mut self) -> &mut Self {
+    #[cfg(feature = "with_tokio")]
+    pub fn send(&mut self) {
         if !self.is_enabled {
-            return self;
+            return ();
+        }
+
+        let request = self.request.clone();
+
+        let _ = tokio::task::spawn_blocking(move || {
+            let client = reqwest::blocking::Client::new();
+
+            let _ = client.post("http://localhost:23517").json(&request).send();
+        });
+    }
+
+    #[cfg(not(feature = "with_tokio"))]
+    pub fn send(&mut self) {
+        if !self.is_enabled {
+            return ();
         }
 
         let request = self.request.clone();
@@ -143,8 +159,6 @@ impl Ray {
         let client = reqwest::blocking::Client::new();
 
         let _ = client.post("http://localhost:23517").json(&request).send();
-
-        self
     }
 
     pub fn die(&mut self, status: i32) {
@@ -168,7 +182,8 @@ impl Ray {
 
         self.request.payloads.push(content);
 
-        self.send()
+        self.send();
+        self
     }
 
     pub fn new_screen(&mut self, name: Option<&str>) -> &mut Self {
@@ -185,7 +200,8 @@ impl Ray {
 
         self.request.payloads.push(content);
 
-        self.send()
+        self.send();
+        self
     }
 
     pub fn clear_screen(&mut self) -> &mut Self {
@@ -206,7 +222,8 @@ impl Ray {
 
         self.request.payloads.push(content);
 
-        self.send()
+        self.send();
+        self
     }
 
     pub fn text(&mut self, value: &str) -> &mut Self {
@@ -223,7 +240,8 @@ impl Ray {
 
         self.request.payloads.push(content);
 
-        self.send()
+        self.send();
+        self
     }
 
     pub fn color(&mut self, value: &str) -> &mut Self {
@@ -239,7 +257,8 @@ impl Ray {
 
         self.request.payloads.push(content);
 
-        self.send()
+        self.send();
+        self
     }
 
     pub fn html(&mut self, value: &str) -> &mut Self {
@@ -256,7 +275,8 @@ impl Ray {
 
         self.request.payloads.push(content);
 
-        self.send()
+        self.send();
+        self
     }
 
     pub fn confetti(&mut self) -> &mut Self {
@@ -272,7 +292,8 @@ impl Ray {
 
         self.request.payloads.push(content);
 
-        self.send()
+        self.send();
+        self
     }
 
     pub fn charles(&mut self) -> &mut Self {
@@ -288,7 +309,8 @@ impl Ray {
 
         self.request.payloads.push(content);
 
-        self.send()
+        self.send();
+        self
     }
 
     pub fn count(&mut self, _name: &str) -> &mut Self {
@@ -296,15 +318,15 @@ impl Ray {
         // increment the counter hashmap with the name?
         // return a custom message with "called name x times"
 
-        todo!();
+        unimplemented!();
     }
 
     pub fn counter_value(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn clear_counters(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn disable(&mut self) -> &mut Self {
@@ -328,120 +350,120 @@ impl Ray {
     }
 
     pub fn file(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn gray(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn green(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn hide(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn hide_app(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn image(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     // I'm not sure if this is possible in Rust
     pub fn r#if(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn json(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn label(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn large(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn limit(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn link(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn measure(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn notify(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn orange(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn pass(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn pause(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn info(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn purple(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     // TODO: This has 3 functions max, per_second and clear
     pub fn rate_limiter(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn red(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn separator(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn show_app(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn small(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn table(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn to_json(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn trace(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn url(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 
     pub fn xml(&mut self) -> &mut Self {
-        todo!();
+        unimplemented!();
     }
 }

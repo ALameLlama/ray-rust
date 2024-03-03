@@ -29,5 +29,11 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ray-rust = "0.1"
+ray-rust = "0.1.5"
+```
+
+## Features
+
+```toml
+ray-rust = { version = "0.1.5", features = ["with_tokio"] }
 ```
